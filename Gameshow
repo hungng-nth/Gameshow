@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRAND FINAL</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #001f3f; /* Dark Blue */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #003366; /* Lighter Blue */
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            text-align: center;
+            width: 400px;
+        }
+
+        h1 {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 30px;
+            color: #00d4ff;
+        }
+
+        .team-section {
+            margin-bottom: 40px;
+        }
+
+        .team-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* The Progress Bar Background */
+        .bar-bg {
+            background-color: #1a1a1a;
+            border-radius: 10px;
+            height: 25px;
+            width: 100%;
+            overflow: hidden;
+            border: 2px solid #00d4ff;
+            margin-bottom: 15px;
+        }
+
+        /* The Moving Part of the Bar */
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #007bff, #00d4ff);
+            transition: width 0.4s ease-in-out;
+        }
+
+        button {
+            background-color: #00d4ff;
+            border: none;
+            color: #001f3f;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #ffffff;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        button:disabled {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
+        #winner-message {
+            font-size: 24px;
+            color: #00ff88;
+            margin-top: 20px;
+            height: 30px; /* Space reserved for text */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gameshow Score</h1>
+        
+        <div class="team-section">
+            <div class="team-name">Competitor 1: <span id="score1">0</span></div>
+            <div class="bar-bg">
+                <div id="bar1" class="bar-fill"></div>
+            </div>
+            <button id="btn1" onclick="addPoint(1)">+1 Point</button>
+        </div>
+
+        <div class="team-section">
+            <div class="team-name">Competitor 2: <span id="score2">0</span></div>
+            <div class="bar-bg">
+                <div id="bar2" class="bar-fill"></div>
+            </div>
+            <button id="btn2" onclick="addPoint(2)">+1 Point</button>
+        </div>
+
+        <div id="winner-message"></div>
+        <button id="reset" onclick="resetGame()" style="margin-top: 20px; background-color: #ff4136; color: white;">Reset Game</button>
+    </div>
+
+    <script>
+        let score1 = 0;
+        let score2 = 0;
+        const winningScore = 7;
+
+        function addPoint(team) {
+            if (team === 1) {
+                score1++;
+                updateDisplay(1, score1);
+                checkWinner(1, score1);
+            } else {
+                score2++;
+                updateDisplay(2, score2);
+                checkWinner(2, score2);
+            }
+        }
+
+        function updateDisplay(team, score) {
+            // Update text
+            document.getElementById(`score${team}`).innerText = score;
+            // Update bar width (7 points = 100%)
+            let percentage = (score / winningScore) * 100;
+            document.getElementById(`bar${team}`).style.width = percentage + "%";
+        }
+
+        function checkWinner(team, score) {
+            if (score >= winningScore) {
+                let teamName = (team === 1) ? "Team A" : "Team B";
+                document.getElementById("winner-message").innerText = teamName + " Wins!";
+                // Disable buttons
+                document.getElementById("btn1").disabled = true;
+                document.getElementById("btn2").disabled = true;
+            }
+        }
+
+        function resetGame() {
+            score1 = 0;
+            score2 = 0;
+            updateDisplay(1, 0);
+            updateDisplay(2, 0);
+            document.getElementById("winner-message").innerText = "";
+            document.getElementById("btn1").disabled = false;
+            document.getElementById("btn2").disabled = false;
+        }
+    </script>
+</body>
+</html>
